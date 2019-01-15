@@ -1,0 +1,14 @@
+#set("title") { Week 1 Writeup }
+
+#set("body") {
+<h1>Week 1 Write up</h1>
+
+#// Insert html for writeup #1 here
+
+
+
+
+
+}
+
+#embed("base")

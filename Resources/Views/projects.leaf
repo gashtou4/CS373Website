@@ -1,0 +1,12 @@
+#set("title") { Projects }
+#set("body") {<h1>So... How can<br />I see your previous work?</h1>
+
+<div class="scrollBox">
+As of right now I dont have any projects that are worth looking at but as I get farther into my education, the number of projects I have available will increase greatly. This website currently is the only project on my GitHub which can be found <a href="https://github.com/gashtou4">here</a>
+</div>
+<br/>
+<div>I hate forced scroll boxes btw! ;)</div>
+
+}
+
+#embed("base")

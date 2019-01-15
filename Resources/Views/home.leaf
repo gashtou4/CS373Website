@@ -1,0 +1,19 @@
+#set("title") { Gerry Ashlock }
+
+#set("body") {
+<h1>Defense Against The Dark Arts (OSU CS373)</h1>
+<div class="carousel">
+<!-- Using href="javacript:void(0)" so that we get the arrows to look and work like links but
+they refrence nothing. All the work is done on the 'click' event -->
+<a href="javascript:void(0)"><img id="previous" src="/images/left.png"></a>
+<img class="slide" id="showing" src="/images/picture1.jpg">
+<img class="slide" src="/images/picture2.jpg">
+<img class="slide" src="/images/picture3.jpg">
+<img class="slide" src="/images/picture4.jpg">
+<img class="slide" src="/images/picture5.jpg">
+<a href="javascript:void(0)"><img id="next" src="/images/right.png"></a>
+</div>
+
+}
+
+#embed("base")

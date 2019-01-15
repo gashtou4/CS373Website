@@ -1,19 +1,108 @@
-body, html {
-	height: 100%;
+html {
+    background-color: #092327;
+    color: #C5D1EB
 }
 
 body {
-	font-family: sans-serif;
+    margin:0;
+    padding: 0;
+    background-color: #092327;
 }
 
-div.welcome {
-	height: 100%;
-	text-align: center;
+a {
+    text-decoration: none;
 }
 
-div.welcome img {
-	position: relative;
-  	top: 50%;
-  	transform: translateY(-50%);
-	width: 300px;
+a:link {
+    color: #92AFD7
+}
+
+a:visited {
+    color: #92AFD7
+}
+
+a:hover {
+    color:#C5D1EB
+}
+
+#topnav {
+    margin: 0;
+    overflow: hidden;
+    background-color: #626868;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#topnav a {
+    float: right;
+    display: block;
+    color: #C5D1EB;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+#topnav a:first-child {
+    float: left;
+    display: block;
+    color: #C5D1EB;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+#topnav a:hover {
+    background-color: #092327;
+    color: #C5D1EB;
+}
+
+#topnav a.active {
+    background-color: #092327;
+    color: #C5D1EB;
+}
+#content:not(h1) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    text-align: center;
+    font-size: 40px;
+    display: inline;
+    width: 75%;
+}
+
+.scrollBox {
+    height:170px;
+    overflow:auto;
+    border: 1px solid #000000;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+.slide {
+    display: none;
+}
+
+#showing {
+    height: 450px;
+    width: 810px;
+    display: inline;
+}
+
+.carousel {
+    display: inline;
+}
+.carousel img:not(.slide) {
+    height: 450px;
+    width: 50px;
 }

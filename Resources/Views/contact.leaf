@@ -1,0 +1,15 @@
+#set("title") { Contact }
+
+#set("body") {
+<h1>So...<br />How do you contact me?</h1>
+
+<ul>
+<li class="contact"><a href="https://www.facebook.com/gashtou"><img src="/images/facebook.png" width="30px" height="30px">Facebook<img src="/images/facebook.png" width="30px" height="30px"></a></li>
+<li class="contact"><a href="https://www.twitter.com/gashtou4"><img src="/images/twitter.png" width="30px" height="30px">Twitter<img src="/images/twitter.png" width="30px" height="30px"></a></li>
+<li class="contact"><a href="https://www.linkedin.com/in/gerald-ashlock-6693073b/"><img src="/images/linkedin.png" width="30px" height="30px">LinkedIn<img src="/images/linkedin.png" width="30px" height="30px"></a></li>
+<li class="contact"><a href="mailto:gashtou4@me.com?Subject=CS290Project"><img src="/images/email.png" width="30px" height="30px">Email<img src="/images/email.png" width="30px" height="30px"></a></li>
+</ul>
+}
+
+
+#embed("base")

@@ -1,0 +1,12 @@
+#set("title") { Writeups }
+
+#set("body") {
+    <h1 id="typeContent">CS 373 Writeups</h1>
+    <ul>
+    #for(writeup in Writeups){
+        <a href="Writeup/#(writeup)"<li>Writeup #(writeup)</li></a>
+    }
+    </ul>
+}
+
+#embed("base")
