@@ -1,14 +1,30 @@
-#set("title") { Writeups }
-
-#set("body") {
-    <h1>Introduction:</h1>
-    <p>This is a blog for Oregon State University's CS 373 (Defense Against the Dark Arts). Here I will talk about what I learned in each week's videos. Some of this I may have already known but I want this to be a place where others can learn as well. Below are links to each weeks write ups. As I complete write ups for each week, the links will appear below. If you have any questions or would like to contact me, please head over to the <a href="/Contact">contact page</a>.</p>
-    <h2 id="typeContent">CS 373 Writeups</h2>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Writeups</title>
+<link rel="stylesheet" href="/styles/app.css">
+#for(script in Scripts) {
+<script src=#(script)></script>
+}
+</head>
+<body>
+<div id="topnav">
+<a #if(lowercase(CurrentPage) == "home"){class="active"} href="/">Gerry Ashlock</a>
+<a #if(lowercase(CurrentPage) == "contact"){class="active"} href="/Contact">Contact</a>
+<a #if(lowercase(CurrentPage) == "writeups"){class="active"} href="/Writeups">Writeups</a>
+</div>
+<div id="writeupContent">
+<h1>Introduction:</h1>
+<p>
+    This is a blog for Oregon State University's CS 373 (Defense Against the Dark Arts). Here I will talk about what I learned in each week's videos. Some of this I may have already known but I want this to be a place where others can learn as well. Below are links to each weeks write ups. As I complete write ups for each week, the links will appear below. If you have any questions or would like to contact me, please head over to the <a href="/Contact">contact page</a>.
+</p>
+    <h2>CS 373 Writeups</h2>
     <ul>
     #for(writeup in Writeups){
         <a href="Writeup/#(writeup)"<li>Writeup #(writeup)</li></a>
     }
     </ul>
-}
 
-#embed("base")
+</div>
+</body>
+</html>
