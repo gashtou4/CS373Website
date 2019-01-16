@@ -1,14 +1,183 @@
-#set("title") { Week 1 Writeup }
-
-#set("body") {
-<h1>Week 1 Write up</h1>
-
-#// Insert html for writeup #1 here please :)
-
-
-
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<title>Week 1 Writeup</title>
+<link rel="stylesheet" href="/styles/app.css">
+#for(script in Scripts) {
+<script src=#(script)></script>
 }
+</head>
+<body>
+<div id="topnav">
+<a #if(lowercase(CurrentPage) == "home"){class="active"} href="/">Gerry Ashlock</a>
+<a #if(lowercase(CurrentPage) == "contact"){class="active"} href="/Contact">Contact</a>
+<a #if(lowercase(CurrentPage) == "writeups"){class="active"} href="/Writeups">Writeups</a>
+</div>
+<div id="writeupContent">
+<h1>
+Week 1 Write Up
+</h1>
+<h2>Topic: Basics of Malware</h2>
 
-#embed("base")
+<h3>Introduction: </h3>
+First off, what even is Malware? Malware is defined quite simply as "<b>MAL</b>icious soft<b>WARE</b>"
+<br />
+<br />
+Malware is often seen as hard but it is actually fairly simple.
+<br />Much of the generic malware is actually copied from others.
+When the malware is very targeted however the code is generally pretty custom for the situation.
+<br />
+Malware generally consists of lots of DLLs and system files. .exe files are not really used anymore.
+<br />
+<h3>Motivations: </h3>
+<ol>
+<li>Destruction</li>
+<li>Reconnaissance</li>
+<li>Political Gain</li>
+<li>Financial Gain</li>
+</ol>
+<br />
+<h3>Types of Malware: </h3>
+<p>
+There are several different kinds of malware out there. There are viruses, trojans, PUPs, and more. Trojans are
+malware that
+present themselves as different software to trick user into downloading it or clicking on links and such. PUPs are
+generally bundled
+with out programs and are installed along side the main program. While these are generally fairly benign, they can
+be harmful as well.
+
+</p>
+<h3>Examples: </h3>
+<ul>
+<li>Viruses (not Virii)</li>
+<ul>
+<li>Parasitic: Depends on a file</li>
+<li>Polymorphic: Changes its code</li>
+<li>Worm: Spreads a quick as possible</li>
+</ul>
+<li>Trojans</li>
+<ul>
+<li>Backdoors</li>
+<li>Downloaders</li>
+<li>Keyloggers</li>
+<li>etc...</li>
+</ul>
+<li>PUP (Potentially Unwanted Programs)</li>
+<ul>
+<li>Adware</li>
+<li>Spyware</li>
+<li>Unwanted Tools</li>
+</ul>
+</ul>
+<h3>Definitions: </h3>
+<ul>
+<li>White </li>
+<ul>
+<li class="definition">- Clean/Harmless program</li>
+</ul>
+<li>Black</li>
+<ul>
+<li class="definition">- Dirty/Dangerous program.</li>
+</ul>
+<li>Honeypot</li>
+<ul>
+<li class="definition">- Something waiting to be attacked so it can catch malware for analysis.</li>
+</ul>
+<li>Goat</li>
+<ul>
+<li class="definition">- A sacrifice. Used to purposefully infect with malware to analyze.</li>
+</ul>
+<li>Replication</li>
+<ul>
+<li class="definition">- Replicate what malware is doing for studying it.</li>
+</ul>
+<li>Hash</li>
+<ul>
+<li class="definition">- Used to uniquely identify malware to ensure integrity of the file. Calculated using a
+cryptographic algorithm.</li>
+</ul>
+<li>Bootkits</li>
+<ul>
+<li class="definition">- Master boot record infection.</li>
+</ul>
+<li>RAT</li>
+<ul>
+<li class="definition">- <b>R</b>emote <b>A</b>ccess <b>T</b>ools.</li>
+</ul>
+<li>APT</li>
+<ul>
+<li class="definition">- <b>A</b>dvanced: The attacker is fluent with cyber intrusion methods and is capable of
+creating custom exploits.</li>
+<li class="definition">- <b>P</b>ersistent: The attacker has an objective and works to achieve their goals
+without detection.</li>
+<li class="definition">- <b>T</b>hreats: The attacker is organized, receives instructions, is sufficiently
+funded, and is motivated.</li>
+</ul>
+<li>Forensic Analysis</li>
+<ul>
+<li class="definition">- Contextual metadata leading researchers. Customer submissions, anecdotal details about
+the attack, honeypots, and association with other threats.</li>
+</ul>
+</ul>
+<h3>Malware Naming Convention: </h3>
+<table>
+<tr>
+<th>Type</th>
+<th>Platform</th>
+<th>Family</th>
+<th>Variant</th>
+<th>Partial MD5 (Info)</th>
+<th>Full Name</th>
+</tr>
+<tr>
+<td>Trojan:</td>
+<td>Win32/</td>
+<td>Revaton</td>
+<td>.T</td>
+<td>!lnk</td>
+<td>Trojan:Win32/Reveton.T!lnk</td>
+</tr>
+</table>
+<br />
+This naming convention is widely used but it is not considered universal.
+<br />
+Using the MD5 of the malware, info can be looked up on various websites such as:
+<ul>
+<li><a href="https://www.virustotal.com">VirusTotal</a></li>
+<li><a href="https://malwr.com">MALWR</a></li>
+<li>and others.</li>
+</ul>
+<h3>Malware Analysis: </h3>
+<p>
+Malware is usually zipped up into a zip file with a password (which is almost always "infected").
+The file extensions are usually changed as well to prevent the malware from being accidentally ran.
+When the malware is being studied, the environment is locked down to prevent it from spreading.
+Research is generally done in a VM (<b>V</b>irtual <b>M</b>achine). This is so the system can be
+reset to a previous state after the research. Tracking what the malware is doing requires the program
+to be ran multiple times so we need a fresh slate everytime. There are also persistent disks that will
+revert back to a previous state upon restart or start up. Some malware are actually VM-aware which
+means they can tell when they are being ran in a VM to prevent being studied. This is overcome by
+goats being sacrificed for research.
+</p>
+<p>
+There are several different tools used to analyze malware. Debuggers and hex editors are must haves.
+Some specific programs used are:
+</p>
+<ul>
+<li>Process Explorer</li>
+<li>Process Monitor</li>
+<li>Flypaper</li>
+<li>AntiSpy</li>
+<li>FakeNet</li>
+</ul>
+<p>
+The lab we completed this week had us using all of these programs and even some not listed. While the lab
+took me forever to get acustomed the environment and tools, after I did, I learned more than I ever thought
+possible. Admittedly, I was frustrated at first while doing the lab but the joy of figuring out what
+the malware was doing was exhilarating.
+</p>
+
+
+</div>
+</body>
+</html>
