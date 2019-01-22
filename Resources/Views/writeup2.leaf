@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Week 1 Writeup</title>
+<link rel="stylesheet" href="/styles/app.css">
+#for(script in Scripts) {
+<script src=#(script)></script>
+}
+</head>
+<body>
+<div id="topnav">
+<a #if(lowercase(CurrentPage) == "home"){class="active"} href="/">Gerry Ashlock</a>
+<a #if(lowercase(CurrentPage) == "contact"){class="active"} href="/Contact">Contact</a>
+<a #if(lowercase(CurrentPage) == "writeups"){class="active"} href="/Writeups">Writeups</a>
+</div>
+<div id="writeupContent">
+
+<h1 style="text-align: center">
+Week 2 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Advanced Forensics</h2>
+
+<h3>Introduction: </h3>
+This week we get into advanced forensic techniques. The purpose is to identify, preserve, analyze
+and present digital evidence in manner that is legally acceptable. Basically it is the process of
+unearthing data of value from information systems.
+So when do we actually conduct forensic investigations?
+<ul>
+<li>Fraud</li>
+<li>Intellectual Property Theft</li>
+<li>Hacker Intrusions / Data Breaches</li>
+<li>Inappropriate Use of the Internet</li>
+<li>Child Exploitation</li>
+<li>eDiscovery Support</li>
+</ul>
+<h3>Process: </h3>
+The steps of Forensics are
+<ol>
+<li>Evidence Acquisition</li>
+<li>Investigation and Analysis</li>
+<li>Report Results</li>
+</ol><br/>
+There are three basic categories for forensics: Live Forensics, Post-Mortem Based Forensics, and Network Based Forensics.
+It is NOT up to us to prove if a suspect is guilty or not. We are only proving what happened on the system. That is all!
+Forensics in a nutshell includes the following aspects:
+<ul>
+<li>Identify Evidence</li>
+<li>Preserve Evidence</li>
+<li>Analyze Evidence</li>
+<li>Present Results</li>
+</ul><br/>
+These need to be done while following the appropriate standards, especially when the results need to be admitted by a court
+of law. The four main principles that you must always adhear to are:
+<ul>
+<li>Minimize data lose</li>
+<li>Record Everything</li>
+<li>Analyze all data collected</li>
+<li>Report your findings</li>
+</ul><br/>
+What is evidence? Evidence is anything that you can use to prove or disprove a fact. Evidence can be found at the following layers:
+<ul>
+<li>Network (Firewall, IDS, routers)</li>
+<li>Operating System</li>
+<li>Databases and Applications</li>
+<li>Peripherals</li>
+<li>Removable media (CD/DVD, USB, ...)</li>
+<li>Human Testimony (of course)</li>
+</ul><br/>
+Triage is the process of proving the same conclusion mutliple different ways. For example, getting the same story from the
+Registry, Sys Log files, Sql-Log files, and others. Evidence is admissible if a court considers it legitimate. Preserving the
+integrity of the evidence at all times is extremely important! You can ensure this the following way:
+<ol>
+<li>Create a cryptographic hash of the entire disk and partition</li>
+<li>Create bit-image copy of each disk and analyze them</li>
+<li>Create a cryptograhic hash of the copy and ensure the hash value match</li>
+<li>Lock the original disk in a limited-access room or container</li>
+</ol><br/>
+
+Below is a picture of the full Incident Response Process from the note: <br/>
+<img src="/images/IR_Process.png" alt="Incident Response Process" height="400px" width="600">
+<br/>
+Generally, having an incident response team is a luxury. Most teams are created adhoc consisting of subject matter experts.
+
+
+
+<h3>APT-Kill Chain: </h3>
+<p>Below is a picture of the APT-Kill Chain.</p>
+<img src="/images/APT_Kill_Chain.png" alt="APT Kill Chain" height="400px" width="600">
+<br/>
+Generally, the first alert will come from the Installation Step or the the Command and Control Step. Sometimes, the alert
+could come from the Delivery step due to a spam filter catching it. Once the alert has come through, you can begin looking for
+evidence from the other steps. There are some difficulties which can be the amount of data, synchronizing the timeline,
+the number of skills needed, the sheer number of tools needed, and log formats are different. <br/><br/>
+The Investigation cycle is: Verification -> System Description -> Evidence Acquisition. There is also the following cycle<br/>
+Timeline Analysis -> Media Analysis -> String or Byte Search -> Data Recovery -> Reporting Analysis -> Timeline Analysis.
+
+<h3>Important Ideas:</h3>
+<p>Locard's Exchange Principle states that when any two objects come into contact, there is ALWAYS a transference of
+material from each object onto the other. You cannot interact with a live system without having some effect on it! While
+investigating a live system, ALWAYS make sure you write down everything since you are making changes to the system with
+every action you preform. Always remember: "Once contaminated - Stay contaimnated = Compromised evidence".</p>
+<p>On you initial response do not, I repeat, DO NOT pull the plug and shut the machine down. Very critical evidence can be
+destroyed but turning off the system. Attackers are begining to take advantage of the volatile storage media in a system.
+The level to which one can hide data relies on the level of access to the system and the technical competency of the attacker.
+Sometimes it can be a good idea to pull the network cord or block ports on the router.</p>
+<p>When collecting evidence, always proceed from most volatile to least volatile:
+<ul>
+<li>System Memory</li>
+<li>Temporary File systems (swapfile / paging file)</li>
+<li>Process Table & Network Connections</li>
+<li>Network Routing information and ARP cache</li>
+</ul><br/>
+At this point, live forensics ends, and the machine can be powered down and moved if necessary.
+<ul>
+<li>Forensics Acquisition of Disks</li>
+<li>Remote Loggings and Monitoring data</li>
+<li>Physical config & Network topology</li>
+<li>Backups</li>
+</ul>
+</p>
+
+<h3>FTK Imager:</h3>
+<p>FTK Imager is tool that allows you to dump the memory of the system (along with other things). When dumping the memory
+of the system, always store it on external media or on a network share. Never store it on the suspect machine. When dumping
+the memory, always give it a descriptive name. You can use a project name, serial numbers, and date to ensure it is
+descriptive. With this tool you can also copy out protected files as well (such as the Master File Table "MFT")!
+Running the GUI version of this tool has a bigger impact on the system as opposed to the command line version.
+With FTK Imager you can add evidence items from different sources like physical drives, logical drive (Raid 5 for example),
+image files, and contents of a folder. When cloning drives, make sure to use a descriptive name here as well! This tool
+can do many other things that I won't cover in this write up but can be found with quick searches on the internet.
+</p>
+
+<h3>Physical Memory (RAM):</h3>
+<p> RAM is the short-term memory of a computer. The information decays very rapidly as soon asthe module is disconnected from
+power or clock sources. There have been recent studies that have shown it isn't as rapid as we first thought though.<br/>
+There is a vast amount of inormation in RAM that only exists when the applications are running. Much of this cannot be
+found on the harddrive. You can often find atrifacts that were hidden by the attacker while analyzing the RAM. Below is a
+list of some contents that can be found in memory.
+<ul>
+<li>All running processes at the time of the dump</li>
+<li>All loaded modules and DLLs including injected malware</li>
+<li>All running device drivers (including potential rootkits</li>
+<li>All open files (and their paths) for each process</li>
+<li>All open registry keys for each process</li>
+<li>All open network sockets for each process (including IP and Port info)</li>
+<li>Decrpyted version of otherwise encrypted info</li>
+<li>Keystrokes</li>
+<li>Encryption Keys & Passwords</li>
+<li>And much, much more</li>
+</ul><br/>
+Volatility is a tool that helps us preform Advanced Memory Forensics on a memory dump.  There are tons of plugins to Use
+along with being able to create your own! A few examples of useful plugins are:
+<ul>
+<li>Malfind: detects hidden and injected code</li>
+<li>Csrpslit: dtected hidden processes with crss.exe handles and ScrRoot-Process Links</li>
+<li>Orphan threads</li>
+<li>PSList: shows process based on a linked lists</li>
+</ul><br/>
+The lab on Volatility was eye opening and really made me admire all that the tool can do!
+</p>
+
+<h3>Advanced Windows Forensics</h3>
+<p>
+Virtually everything done in Windows refers to or is recorded in the registry. As an example, every time a USB stick
+is inserted into the sytem, the fingerprint of the specific USB stick is recorded in the registry. The registry consists of 5
+hierarchal folders called 'hives' and begin with 'HKEY' (<b>H</b>andle to a <b>KEY</b>). Although 5 can be seen, only two
+of them are actually there. The other three are just shortcuts to folders within those two. The two actual folders are
+HKEY_USERS(HKU) and HKEY_LOCAL_MACHINE(HKLM). Each of these hives is composed of keys which contain values and subkeys.
+Values are the names of certain items within a key which uniquely identify specific values pertaining to the OS,
+or to applications that depend on that value. You can use the registry to help create a timeline of the events that happened
+on the machine. Volatility can help create timelines using the timeliner plugin.
+</p>
+
+<h3>Data Recovery</h3>
+<p>
+This is also called Data Carving. This is the process of recovering files or data that were deleted or in slack
+from the system. When a file is deleted, all that is removed is the file start and file end flags. The actual data between
+them isn't deleted or overwritten at that time. PhotoRec is an app that tries to carve out files in an image based on headers
+and footers.
+</p>
+
+
+
+
+</div>
+</body>
+</html>

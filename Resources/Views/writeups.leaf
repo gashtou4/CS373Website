@@ -21,7 +21,7 @@
     <h2>CS 373 Writeups</h2>
     <ul>
     #for(writeup in Writeups){
-        <a href="Writeup/#(writeup)"<li>Writeup #(writeup)</li></a>
+        <li><a href="Writeup/#(writeup)">Writeup #(writeup)</a></li>
     }
     </ul>
 

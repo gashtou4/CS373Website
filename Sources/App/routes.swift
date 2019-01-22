@@ -13,7 +13,7 @@ public func routes(_ router: Router) throws {
         return try req.view().render("contact", context)
     }
     router.get("Writeups") {req -> Future<View> in
-        let context = WriteupsContext(currentPage: "writeups", availableWriteups: [1])
+        let context = WriteupsContext(currentPage: "writeups", availableWriteups: [1,2])
         return try req.view().render("writeups", context)
     }
     router.get("Writeup", Int.parameter) {req -> Future<View> in
