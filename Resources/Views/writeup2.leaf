@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Week 1 Writeup</title>
+<title>Week 2 Writeup</title>
 <link rel="stylesheet" href="/styles/app.css">
 #for(script in Scripts) {
 <script src=#(script)></script>
