@@ -17,7 +17,193 @@
 
 
 
-<!-- Insert Write up here -->
+<h1 style="text-align: center">
+Week 3 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Malware Defense</h2>
+
+<h3>Introduction: </h3>
+<p>
+Malware follows 4 basic tenants.
+<br/><br/>
+<img src="/images/Intro.png" alt="Malware Tenants" height="360px" width="640px">
+<br/><br/>
+"First Contact" comes first. First Contact is how the malware gets introduced to their victims.
+Some examples are emails, malvertising (malware infected or controlled advertising), poisoned search results, watering holes
+(sites that people go to alot), and physical access. After the attackers reach their target the next step is to have
+"Local Execution" of the code. Three ways to get this to happen are social engineering, exploitation, and features.
+After the code execution, the malware tries to "Establish Presence". The malware will then try to blend in or hide.
+This is so malware appears legitimate. It can blend in by using OS-like filenames or living in wrong paths, changing
+creation and modification timestamps, and signing the files. The malware can hide as a bootkit or rootkit.
+The malware also wants to persist. It can do this at system startup (as a bootkit), windows startup
+(services, run keys, startup folder), application startup (DLL hijacking), and others ways such as scheduled tasks.
+There is a program called Autoruns which will show you all the programs set to autorun on your machine.<br/><br/>
+The overall goal of malware is generally to harvest information of some kind. These are normally:
+<ul>
+<li>Enumerate</li>
+<ul>
+<li>Docs</li>
+<li>Passwords</li>
+<li>Emails</li>
+<li>Processes</li>
+</ul>
+<li>Hook</li>
+<ul>
+<li>Browser</li>
+<li>Key Logging</li>
+<li>Screen Scraping</li>
+</ul>
+<li>Parse</li>
+<ul>
+<li>Passwords</li>
+<li>Credit Cards</li>
+</ul>
+<li>Logs</li>
+</ul>
+Generally the information is sent back to the attacker through the web using http, ftp and even email.
+</p>
+
+<h3>How to Defend against malware: </h3>
+<p>
+The best malware defense is layered (in depth). A couple ways to prevent against First Contact are:
+<ul>
+<li>Web reputation (browsers tell you when a site may be compromised before visiting)</li>
+<li>The App Store model so stores can patrol apps</li>
+<li>Scanning remvable media before it is mounted</li>
+<li>Anti-Spam</li>
+</ul>
+When malware attempts to establish presence, they will often try to disable AV (<b>A</b>nti-<b>V</b>irus) programs so
+they aren't found. <br/><br/>
+Some popular technologies for malware defense are: Anti-Malware, Access Control,
+Host IPS (<b>I</b>ntrusion <b>P</b>revention <b>S</b>ystem), Host Firewall, Message/Network/Web Reputation, Network Firewall,
+and Network Intrusion Prevention. These technologies generally rely on content. Threats are continuely changing and being added
+so these technologies must update their policies regularly as well. The design of anti-malware products is as follows:<br/>
+Outside: Management Server which allows admins to manager a lot of nodes. The first layer of abstraction is the Point Product.
+The Point Product then talks to the scanner core(s) which handle different types of threats. The scanner cores interface with
+the engine and the engine consume the content. <br/><br/>
+Some general features of Anti-Malware software are as follows:
+<ul>
+<li>Traditional File Scanning like OAS and ODS (The focus is actually shifting away from this slightly)</li>
+<li>Registry and Cookies</li>
+<li>Cloud scanning</li>
+<li>Memory scanning</li>
+<li>Scripts</li>
+<li>Configuration: Exclusions, Sensitivity, Reporting, etc</li>
+<li>And plenty more!</li>
+</ul>
+</p>
+
+
+
+<h3>YARA: </h3>
+<p>
+YARA is the pattern matching "Swiss Army Knife" of malware researches. It has an open language that is used by a bunch
+of different sites and companies. YARA can be used to match strings with quotes (ex: "StringToFind") and can be followed by:
+<ul>
+<li>'nocase': case insenstive</li>
+<li>'wide': strips zeroes in unicode strings</li>
+<li>'wide ascii': searchs both wide and ascii strings</li>
+<li>'fullword': only considers full delimited strings, not substrings</li>
+</ul>
+YARA can also match Byte patterns, or as YARA calls them Hexadecimal strings, using currly braces (ex: {1A 2B 3C}). These can
+accept wildcards (? and ??) along with "jumps" (ex: [1-3]) which are wildcards for the range specified. So "[1-3]" means that
+it should allow 1 to 3 bytes of wildcards. If you search for {1A [1-3] 5E}, that would match {1A 2B 3C 4D 5E} as well
+as {1A 45 5E}. You can also include the following operators:
+<ul>
+<li>Boolean: and, or, not</li>
+<li>Relational: >, >=, <, ==, !=</li>
+<li>arithmetic: +, -, *, \</li>
+<li>Bitwise: &, |, >>, <<, ~</li>
+</ul>
+YARA can also auto generate strings but isn't especially helpful. <br/><br/>
+To use YARA, you create rules that you would like the program to scan for and then it prints out a list of files that
+match the rules provided. There are a couple sample rules in the Labs section below.
+</p>
+
+
+
+<h3>YARA Labs:</h3>
+<p>
+We had three different groups of malware that we need to create YARA rules that needed to catch all the files in the group
+while NOT catching any of the files in the Windows32 folder (which we are considering clean). The rule I created for
+Group #1 was :
+<br/>
+<img src="/images/Group1.png" alt="Group 1 YARA Rule" height="360px" width="640px">
+<br/><br/>
+The rule I created for Group #2 was:
+<br/>
+<img src="/images/Group2.png" alt="Group 2 YARA Rule" height="360px" width="640px">
+<br/><br/>
+The rule I created for Group #3 was:
+<br/>
+<img src="/images/Group3.png" alt="Group 3 YARA Rule" height="360px" width="640px">
+<br/><br/>
+One interesting thing I learned from these labs (and the discussions afterwards) were that certificates don't actually mean
+much. Certificates only ensure that the program/file has not been altered between the company signing it and you recieving it.
+This means that the program could have been dirty from the beginning (as is the case with Tuguu in the group3).
+</p>
+
+
+
+<h3>Automation:</h3>
+<p>
+Automation analysis is crucial and automated signitures actually account for 99% of the content. The "best" signitures are
+still ones that are created manually by humans. As with all things, there are benefits and disadvantages for anti-malware
+automation.
+<ul>
+<li>Benefits:</li>
+<ul>
+<li>Scale</li>
+<li>Consistency</li>
+<li>Performance is less of a concern</li>
+</ul>
+<li>disadvantages:</li>
+<ul>
+<li>Out of Context (Not the real world)</li>
+<li>Prone to invasion</li>
+<li>Potentially prone to probing and DOS attacks.</li>
+</ul>
+</ul>
+</p>
+
+
+<h3>Cuckoo:</h3>
+<p>
+Cuckoo is an open automated analysis tool used around the world. The host acts like a controller which creates and deploys
+how ever many VM's you configure it to run. The VM's then stream their results back to the host. These results include:
+<ul>
+<li>Traces of WIN32 API calls performed by all processes spawned by the malware</li>
+<li>Files being created, deleted, and downloaded by the malware</li>
+<li>Memory dumps of the malware process</li>
+<li>Network traffics</li>
+<li>Screenshots</li>
+<li>Full memory dumps of the machines (which can be loaded into Volatility</li>
+</ul>
+Cuckoo has a quick overview of signatures, static analysis of strings, and behavioral analysis. Cuckoo can handle many files
+including generic windows executables (.exe, .dll), PDF docs (.pdf), MS Office Docs (.doc, .ppt), URLs and HTML files,
+Scripts (.php, VB), ZIP files, Java files (.jar), and a bunch more! <br/> <br/>
+We performed a lab for YARA and Cuckoo. We were given a set files where some of them were begign and some were malicious.
+We were to find the malicious ones and preform a full analysis of it (along with creating a YARA rule to catch it). I
+selected the first one (068D5B62254DC582F3697847C16710B7). Below is the YARA rule I created for this malware.
+<br/>
+<img src="/images/YaraLabRule.png" alt="Rule for YARA Lab" height="360px" width="640px">
+</p>
+
+
+
+
+<h3>Conclusion:</h3>
+<p>
+Basically, malware analysis aims to discover if a threat is present, isolate, classify, and remediate the malicious
+code, defend against future attacks, and finally describe the attack. <br/>
+Learning about YARA and Cuckoo was extremely interesting. I will likely spend some free time running "clean"
+programs and watching to see what these tools find, and trying to create good/clean YARA rules for catching it. I
+don't think I will attempt this with malware since I don't have a good way to outside of class to get malware samples
+and keep VM's in a state that will help with this.
+</p>
+
+
+
 
 
 </div>

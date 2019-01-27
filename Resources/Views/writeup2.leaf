@@ -77,7 +77,7 @@ integrity of the evidence at all times is extremely important! You can ensure th
 </ol><br/>
 
 Below is a picture of the full Incident Response Process from the note: <br/>
-<img src="/images/IR_Process.png" alt="Incident Response Process" height="400px" width="600">
+<img src="/images/IR_Process.png" alt="Incident Response Process" height="360px" width="640px">
 <br/>
 Generally, having an incident response team is a luxury. Most teams are created adhoc consisting of subject matter experts.
 
@@ -85,7 +85,7 @@ Generally, having an incident response team is a luxury. Most teams are created 
 
 <h3>APT-Kill Chain: </h3>
 <p>Below is a picture of the APT-Kill Chain.</p>
-<img src="/images/APT_Kill_Chain.png" alt="APT Kill Chain" height="400px" width="600">
+<img src="/images/APT_Kill_Chain.png" alt="APT Kill Chain" height="360px" width="640px">
 <br/>
 Generally, the first alert will come from the Installation Step or the the Command and Control Step. Sometimes, the alert
 could come from the Delivery step due to a spam filter catching it. Once the alert has come through, you can begin looking for
