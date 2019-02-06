@@ -17,7 +17,203 @@
 
 
 
-<!-- Insert Write up here -->
+
+<h1 style="text-align: center">
+Week 4 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Vulnerabilities and Exploits</h2>
+
+<h3>Introduction: </h3>
+<p>
+This week are focusing on the attacking side of this whole Defense Against The Dark Arts discussion.
+That means we are talking about vulnerabilities and exploits! Companies actually hire people to attack
+their networks to test and reveal vulnerabilities so they can patch them.
+</p>
+
+<h3>Section 1: Hacking</h3>
+<p>
+Hacking is defined as controlling a program in a way that was not intended and then using that to our advantage. Basically
+it is manipulating software by finding bugs which alter the behavior of the program, or taking advantage of misconfiguration
+and/or poor programming practice. <br/>
+When the internet first started, hacking wasn't considered such a big deal. No one was really doing anything harmful with it.
+Now-a-days countries now have whole cyber armies to combat/preform hacking from/against other countries. While
+learning/practicing this kind of stuff, you MUST be ethical and safe about it. <br/>
+Companies have set up "Bug Bounty" programs which allow people to report when they find bugs or vulnerabilities and
+the company will pay for it. The reason for these programs is fairly obvious. Companies are extremely invested in finding
+issues and patching them A.S.A.P. <br/>
+A couple years ago, hacking generally started in the internet began attacking the DMZ. Companies have began solidifying the
+DMZ to prevent this. As a result, hackers have began to shift towards phishing and social engineering so they can attack
+from the inside instead. Many hacks begin with hacking the users browser.
+</p>
+
+<h3>Section 2: WinDBG overview</h3>
+<p>
+WinDBG is what we will be using this week (and beyond if needed). We use the program to research and begin executing two
+different attacks, Stack Overflow and Use-After-Free. Below are some the programs functions:
+<ul>
+<li>Adding breakpoints</li>
+<li>Viewing Registers</li>
+<li>Calculations on/with registers</li>
+<li>Stepping through the program</li>
+</ul>
+<br/>
+To begin debugging, you must first select the executable to run. Once the program begins, WinDBG immediately stops the program
+for debugging. WinDBG will show you the disassembly if you would like to look at it. WinDBG will show you how it was launched,
+any modules that are loaded, each module's start and end location in memory, outputs the registers, and where the program is
+paused. Below is a list of commands for WinDBG and what they do:
+<ul>
+<li><i><u>lm</u></i>: list the modules loaded</li>
+<li><i><u>lmf m [String]</u></i>: list modules that match the given [String]</li>
+<li><i><u>bp</u></i>: Sets a breakpoint at the given location</li>
+<li><i><u>bl</u></i>: List all breakpoints</li>
+<li><i><u>g</u></i>: execute the program</li>
+<li><i><u>dd [Location/Register]</u></i>: Display a DWORD of memory at [Location/Register]</li>
+<li><i><u>db [Location/Register]</u></i>: Display the actual bytes at [Location/Register]</li>
+<li><i><u>da [Location/Register]</u></i>: Shows you the ascii representation of [Location/Register]</li>
+<li><i><u>du [Location/Register]</u></i>: Shows you the unicode representation of [Location/Register]</li>
+<li><i><u>u [Location/Register]</u></i>: Shows the unassembled info (8 Lines is default)</li>
+<li><i><u>formats [Argument]</u></i>: Shows you the different representations of [Argument]
+(shows decimal, octal, binary, hex, chars, time, float, and double)</li>
+<li><i><u>dv</u></i>: Shows you the local variables on the stack</li>
+<li><i><u>hh [Command]</u></i>: Gives you help on the given [Command]</li>
+<li><i><u>t</u></i>: Step Into</li>
+<li><i><u>p</u></i>: Step Over</li>
+<li><i><u>g [Address]</u></i>: execute until we hit [Address]</li>
+<li><i><u>r</u></i>: shows the registers</li>
+<li><i><u>q</u></i>: quit</li>
+<li><i><u>!teb</u></i>: shows thread specific info (Mainly StackBase and StackLimit)</li>
+<li><i><u>!peb</u></i>: shows process specific info (Mainly ProcessHeap)</li>
+<li><i><u>!address [Address]</u></i>: tells you where [Address] is located in memory (image, stack, heap)</li>
+</ul>
+<br/>
+When WinDBG is running and hits a breakpoint, the program will tell you which breakpoint was hit, what the status of the
+registers are, and where it is executing from. <b>Please note that all numbers are shown in hex format!</b>
+
+<h4>Quick Overview: Registers</h4>
+<p>
+Lets quickly go over registers as a review. Registers are spots where the CPU can store data (usually a DWORD). Registers
+are much faster than memory which is why they are used by the CPU. When a function returns usually the EAX register is used
+to store the return value. The EIP register points to the instruction being executed. EBP and ESP containt the start and end
+locations of the stack frame.
+</p>
+</p>
+
+<h3>Section 3: Flaws and Vulnerabilities</h3>
+<p>
+There are several types of flaws and vulnerabilities. There are:
+<ul>
+<li>Configuration (Weak passwords)</li>
+<li>Logic (Authorization issues</li>
+<li>Storage (Inadequate encryption</li>
+<li>Input Validation (Memory Corruption, Injection)</li>
+</ul>
+<br/>
+This week we are going to focus on Memory Corruption. Memory Corruption is defined as accessing (Reading/Writing) memory
+(Stack/Heap) in an invalid (Originally Unintended) way which results in undefined behavior (That we hope to control). There
+are several common categories of memory corruption vulnerabilities. Some of these are:
+<ul>
+<li>Lifetime Control</li>
+<li>Uninitialize Memory</li>
+<li>Array index calculations</li>
+<li>Buffer length calculations</li>
+</ul>
+<br/>
+Exploitation is defined as taking advantage of a vulnerability. An exploit is simply some code, input, or data that we are
+providing the program that causes some condition. An exploit has two parts:
+<ol>
+<li>Vulnerability Trigger: used to invoke the software bug to obtain control of the program</li>
+<li>Payload: the action to be preformed once control is obtained</li>
+</ol>
+<br/>
+Generally as a proof of concept, "good" attackers will launch the calculator app since this signifies that they have control
+and can do whatever they want. The payload that you used is very specific to the vulnerability and action would would like
+to take.<br/>
+Metasploit is a kind of database that contains all kinds of vulnerability triggers and payloads that you can use. You can
+blend them together in whatever way you want. It is generally used by professionals to do security assessments but since it
+is open to all on the internet, evil doers can use it as well.
+<br/>
+</p>
+
+<h3>Section 4: Stack Overflow</h3>
+<p>
+<h4>Quick Overview: Stack</h4>
+<p>
+The stack is a state mechanism for a program. When you call a function inside of a function, it needs a why to get back
+to function1. This is where the stack comes in handy.<br/>
+<img src="/images/stack.png" alt="Stack" height="360px" width="640px">
+</p>
+<br/>
+To view the stack in WinDBG you use the command 'k' and it will show you the child BP and return function. When stack overflow
+happens, we begin writing to parts of the stack that weren't meant to be written to. "memcpy" can cause this if not used correctly.
+This will overwrite the Saved EBP and return so that when the runction returns, we are returning somewhere else. Once you get
+the execution pointer to point somewhere unintended, you can then figure out where that pointer is pointing to and place your
+own code (or anything else) at that location.
+<ol>
+<li>Crash Triage:</li>
+<ul>
+<li>
+We need to understand what happened. We need to know what registers contain attacker-controlled data, what registers
+point to attacker-controlled data, is attacker-controlled data on the stack or heap, and do we control critical data
+such as stack frames. Where are we in the execution of the program, where is the vulnerability and was the crash
+caused by an exploit mitigation solution.
+</li>
+</ul>
+<li>Determine the return address offset</li>
+<ul>
+<li>
+We generally used javascript (especially for browser related vulnerabilities). We can use msfPatternString to find
+the return address offset. The msfPatternString is a string where you can figure out the wanted offset by inspecting
+the characters in the return address. Using "!load byakugan" and then "!pattern_offset [StringLength]" the program
+will tell us what offset of the msfPatternString was loaded into each register. We can then create our own string
+so that we overwrite EIP with exactly what we want.
+</li>
+</ul>
+<li>Position our shellcode</li>
+<ul>
+<li>
+We need to create the string with a specific amount of filler so that the shellcode is at the location where we
+override the EIP register.
+</li>
+</ul>
+<li>Find the address of our shellcode</li>
+<ul>
+<li>
+After the function that returns ESP actually points to the beginning of our shellcode. We can then use what is called
+a trampoline. JMP ESP will actually cause the program to jump to our shellcode and being executing. We then search for
+the code "FF E4" which is the JMP ESP insturction. Once we find the location of that instruction, we set that as the
+return location and our shellcode will then being executing!
+</li>
+</ul>
+</ol>
+</p>
+
+<h3>Section 5: Use-After-Free</h3>
+<p>
+The core steps for this kind of vulnerability are:
+<ol>
+<li>Free the object</li>
+<li>Replace the object with our own (figure out the size of the original object and make ours the same size)</li>
+<li>Position our shellcode</li>
+<li>Use the object again</li>
+</ol>
+<br/>
+When you use new to instantiate a new class object, the heap manager actually calls a number of different functions and APIs.
+By the end it will call VirualAlloc() which gives you the memory you requested. How these functions are called depends on the
+size of the memory you request and how many times. Low Fragmentation Heap occurs when you request the same size of memory a
+certain number of times (generally 18). This then creates a chunk of memory that we can exploit so we know our class object
+will be place at the same location as the one that has been freed (but is called again which causes the crash).
+<br/>
+We can use page heap to get all kinds of debug info in Windows. This can be enabled by the following command: <br/><br/>
+<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"C:\Program Files (x86)\Windows Kits\8.0\Debuggers\x86\gflags.exe" /i explore.exe +hpa +ust</i>
+<br/><br/>
+<i>+hpa</i> enables the page heap and <i>+ust</i> enables user mode stack tracking. Switching the + to a - will disable them. <br/>
+To exploit the vulnerability we need to first know the exact size of the object so we can create own own. UserSize tells us just
+this when the object is in "busy allocation". If it is freed we won't know the size so we need to set a breakpoint just before
+the object is freed. Once we know the size, we need to remove page heap with the command above with -'s instead. Once the object
+is freed in the code, we create our custom object so that it is located in the same place as the freed object. We then perform
+what is called a "heap spray" where we create a massive 100MB allocation. Browsers create memory in a very predictable way.
+We can then place our shellcode repeated a bunch of times (the spray) and we can easily find the start of our shellcode.
+</p>
 
 
 </div>
