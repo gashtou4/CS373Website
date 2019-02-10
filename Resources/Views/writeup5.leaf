@@ -17,7 +17,166 @@
 
 
 
-<!-- Insert Write up here -->
+<head>
+<link rel="stylesheet" href="app.css">
+</head>
+<h1 style="text-align: center">
+Week 5 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Windows Internals</h2>
+
+<h3>Introduction: </h3>
+<p>
+This week are learning about a type of malware called a rootkit, windows internals, operating system structures, how threading
+works, and how processes work. This will all be on a more practical level as opposed to what we may have learned in an
+operating system class in the past. We will continue to use WinDBG along with some tools we have learned in past weeks. We will
+also learn a new tool or two but they behave much like others we have already learned. <br/>
+There was a rootkit issue that happened with Sony back in 2006. When a CD was inserted into the computer, drivers were
+installed to try and protect the music that was on the CD. This was then used by attackers to hide their malware. <br/>
+By just adding “$sys$” to a file name, the file was automatically hidden. We are mainly going to focus on the art
+of stealth and persistence by malicious code. To do this we will also learn some essential windows internals.
+</p>
+
+<h3>Section 1: Stealth</h3>
+<p>
+First, we are going to understand concepts of stealth by means of memory manipulation and then then we will debug and explore
+various stealth techniques. <br/>
+What is a rootkit and how are they created? A rootkit is malware that actively conceals its existence and actions from users
+and system processes. Approximately 10% of current malware use a rootkit. Rootkits are most prevalent in 32-bit windows
+but there are a handful of families for 64-bit windows. This does in fact affect Linux and Mac as well. Rootkits are one of
+the best ways to learn about kernel security challenges. Rootkits generally "hook into" windows API's. Hooking is when
+something sits between the call to the API and the API itself, kind of like a scanner or sorts. Although it is harder for
+rootkits to enter the 64-bit kernel, they can still do so in the following ways:
+<ul>
+<li>Bypassing driver signing check (using testsigning mode)</li>
+<li>Modifying the windows boot path, MBR. (Secure boot prevents this.</li>
+<li>Kernel exploits in Windows kernel or third party drivers</li>
+<li>Stealing valid digisigs (Similar to Stuxnet)</li>
+</ul>
+<br/>
+Generally the difference between a rootkit and a bootkit is that rootkit tried to hide itself, and bootkits do not.
+<h4>User mode memory basics</h4>
+<img src="/images/kernel_vs_user.png" alt="Kernel_vs_User" height="360px" width="640px">
+<br/>
+<p>
+Let's quickly go over the Kernel vs the User. User mode applications will call the windows API that will then tell
+the kernel what they would like done. In the user layer lives .exe and .dll files. In the kernel layer lives .sys
+files. All of these are PE files.
+</p>
+<h4>Kernel Memory Basics</h4>
+<p>
+Kernel memory is a flat memory model with no security separation. Any kernel driver can access any part of memory. It
+is composed of windows kernel (ntskrnl.exe) as well as driver code. There are many important structures that are prime
+targets for stealth (SSDT, IRP, IDT, etc). Some helpful WinDBG commands are:
+<ul>
+<li>.process</li>
+<li>lm</li>
+<li>!devobj</li>
+<li>!drvobj</li>
+<li>!devstack</li>
+<li>!irp</li>
+<li>dps nt!kiServiceTable L191</li>
+</ul>
+</p>
+</p>
+
+<h3>Section 2: Say Hello to Agony</h3>
+<p>
+In this lab, using Tuluka, we can see that the rootkit is hooked into three different winAPIs. They are NtEnumerateValueKey,
+NtQueryDirectoryFile, NtQuerySystemInformation. Using this the rootkit has hidden the wininit.sys file, hiding the registry
+changes, along with hiding the process. In a typical system any address above 80000000 is a kernel address. LiveKD is a live
+debugger that can read the windows kernel memory and displaying the output. ‘u’ means unassemble. We can use
+"u [OriginalAddressOfAPIFromTuluka]" and "u [CurrentAddressOfAPIFromTuluka]" to see the different between the code being
+called. We can use Tuluka to restore the service back to original. Doing this will show you the wininit.sys file in file
+explorer since the API is no longer hooked and filtering it out. <br/>
+"<i>dps nt!kiServiceTable L191</i>" will show a table that has all the system APIs that this version of the OS supports.
+This is called the SSDT: System Service Descriptor Table. The name shown in the table isn’t what should be used to see if
+something is off, it should be the address each is pointing to. If there are a couple that are addressed quite differently
+than the rest that is an easy way to know that something funky is going on.
+</p>
+
+<h3>Section 3: Tread Basics</h3>
+<p>
+What is a thread and how does it on a CPU? A thread is the smallest unit of execution in an OS. There is a TouTube video you
+can watch <a href="youtube.com/watch?v=hsERPf9k54U">here</a>. Before any execution can happen, the machine code is loaded
+into RAM. The BUS then transfers it to the CPU. When a second thread or application request CPU time, the thread scheduler
+handles thread scheduling for us. You can set a priority for the thread (more on this later). Threads that are waiting for
+execution, the waiting threads priority is increased so that they also get time. Some important concepts for threads are:
+<ul>
+<li>Thread Context</li>
+<li>Thread Stack</li>
+<li>Thread Environment Block (TEB)</li>
+<li>Thread Scheduling</li>
+<li>Thread - Process relationship</li>
+</ul>
+The Thread Object defines a thread. Kernel Object is a data structure defined by OS to describe various OS constructs, thread
+being one such construct. TEB, ThreadStack, Priority, State, etc are all defined within this struct.<br/>
+WinDBG command to see thread object: <i>dt_KTHREAD</i><br/>
+Thread context stores all the related register values of the thread. During execution register values are stored in CPU,
+else they are in Memory (WinDBG command: DT_CONTEXT). Each thread has its own stack. There is a user mode stack and a kernel
+stack. The kernel stack is used when control is transferred from user to kernel and data is copied for security. TEB contains
+thread specific information like exception handling and TLS (WinDBG command: <i>DT_TEB</i>). Processes are implemented as
+objects and each executable thread may contain one or more threads. Each process includes an object table that has handles to
+other objects known to this process. Just to be clear a process MUST have at least one thread to execute.
+</p>
+
+<h3>Section 4: Peering into process memory</h3>
+<p>
+Process Hacker is a program much like process explorer. However when viewing memory it is able to walk through the virtual
+memory of the process and identify some attributes about it. In Windows 32-Bit each process can have 4GB of memory. The
+Image section is the actual code for the process. Everything else is either allocated by the process or the DLLs that the
+process is loading. Using the attributes you can tell what is Read-Only, Read/Write, Read/Write/Execute, and so on. If you
+ever see something that is Executable but doesn’t have a name, then it is most likely nefarious. This is normally from
+something injecting into the process. <br/>
+Hooking basics: <br/>
+<img src="/images/hooking_basics.png" alt="hooking_basics" height="360px" width="640px">
+<br/>
+One tactic is to replace the first 5 Bytes with “jmp RootKitCodeOffset”. This then executes the rootkit code, and then the
+rootkit executes the original first 5 Bytes and returns the function flow back to the original call. Malware scanning can
+follow the detour and then send the code up to the scanner and complete its normal scanning on the code. <br/>
+<h4>Lab #3: Kernel Debugging 101</h4>
+<p>
+My results for NtEnumerateValueKey part of the lab is as follows:<br/>
+Start of the rootkit code: 964d2480<br/>
+Call to NtEnumerateValueKey: 964d24d4<br/>
+Offset: 0x54
+</p>
+</p>
+
+<h3>Section 5: Bootkits and Boot Process</h3>
+<p>
+<img src="/images/Boot_Process.png" alt="Boot_Process" height="360px" width="640px">
+<br/>
+Malware that inserts itself into any of these steps, then it is a bootkit and can cause a ton of issues. Microsoft has
+created something called secure boot which helps alleviate some of the way that malware can insert itself into the process.
+The Master Boot Record (MBR) is contained in the 0th Sector of the Hard drive. Within that sector is the BootStrap code,
+partition table, and then the boot signature (55h AAh). You can actually step through the MBR code with virtual machines
+using GDB! Generally the difference between a rootkit and a bootkit is that rootkit tried to hide itself, and bootkits do
+not. Bootkits can actually install rootkits at launch so that it can not be removed. <br/>
+<img src="/images/trends.png" alt="trends" height="360px" width="640px">
+<br/>
+Examples of trends in stealth malware:
+<ul>
+<li>Disassociating Memory from file-on-disk</li>
+<ul>
+<li>Removing the association of the rootkit in memory from the file on the disk so that it can’t be found easily.</li>
+</ul>
+<li>File content forging</li>
+<ul>
+<li>Overwrite existing files and forge the ‘view’ such that AV gets the clean view instead of malicious.</li>
+</ul>
+<li>Removing dependency on files</li>
+<ul>
+<li>There is no file so it can be harder to find.</li>
+</ul>
+<li>Limited self preservation</li>
+<ul>
+<li>Watcher threads to defend and attack AV.</li>
+</ul>
+</ul>
+There was a rootkit called the "Brazilian Banker RootKit" that uses OS callbacks such as PsSetLoadImageNotifyRoutine. These
+callbacks are guaranteed to run before new programs are ran so that it can be hijacked.
+</p>
 
 
 </div>
