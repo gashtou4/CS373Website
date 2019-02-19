@@ -17,7 +17,273 @@
 
 
 
-<!-- Insert Write up here -->
+<h1 style="text-align: center">
+Week 6 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Network Security</h2>
+
+<h3>Introduction: </h3>
+<p>
+Why bother with network security? It helps host-based protections. It keeps dangerous host/data out and creates a safe
+space (kindergarten rules). It prevents exfiltration of critical data. It also protects hosts missing internal protection
+(for example legacy, mobile, visitors, BYOD (<b>B</b>ring <b>Y</b>our <b>O</b>wn <b>D</b>evice,) IoT (<b>I</b>nternet of
+<b>T</b>hings)). Also hiding network traffic is different from hiding on the host. There are threats that come from the
+network (DDoS for example). <br/>
+<img src="/images/Robust.png" alt="Robust" height="360px" width="640px">
+<br/>
+We will go over the following Protection Strategies:
+<ul>
+<li>Positive policy</li>
+<li>Firewalls / Security Zones</li>
+<li>Defense in Depth</li>
+<li>Intrusion Detection</li>
+<li>Honeynets / Intrusion Deception</li>
+<li>Quarantine</li>
+<li>Reputation</li>
+</ul>
+</p>
+
+<h3>Section 1: Positive Policy</h3>
+<p>
+(Hosts call this Whitelisting) This is a definition of what you expect/allow to happen. Other things are considered suspicious
+and are not permitted. This gives the defender the advantage since it allows for use of internal conventions and choices and
+the attacker has to guess. It limits the attack surface, and also provides a hook for other trust mechanisms. The machine
+will detect a threat but won’t be able to name it (what was actually attempted).
+</p>
+
+<h3>Section 2: Firewalls / Security Zones</h3>
+<p>
+The most common implementation of policy is to define zones in the network with policy between the zones. What is a firewall?
+Firewalls are devices that sit between the zones and filter traffic for policy. Over time, more functions have been added to
+firewalls (Routing, NAT, IPS for example). Firewalls are a big business and basically an industry of their own. Firewalls
+are best at describing policy from IP address to IP address. Commonly used Zones:
+<ul>
+<li>Internet</li>
+<li>Extranet</li>
+<li>DMZ</li>
+<li>Intranet</li>
+<li>Corporate</li>
+<li>User Stations (DHCP Pools)</li>
+<li>Testing Labs</li>
+<li>Data Center</li>
+</ul>
+<img src="/images/Zones.png" alt="Zones" height="360px" width="640px">
+<br/>
+Other Firewall-like devices:
+<ul>
+<li>Web Gateway
+<ul>
+<li>Proxies web connections to apply policy. Is generally on premise or in the cloud. Provides inspection of web
+content (javascript and java code). General anti-malware analysis also makes sense here. It is also able to
+leverage the interactive nature of web browsing to interact with the user.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Email Gateway
+<ul>
+<li>Proxies SMTP connections. Typically the customer sets the MX records to point at the gateways IP address and
+configures the mail server IP into the gateway. Is also generally on premise or in the cloud. The original
+mission was anti-spam but it also scans files for malware. It is now trending towards DLP
+(<b>D</b>ata <b>L</b>oss <b>P</b>revention).</li>
+</ul>
+</li>
+</ul>
+</p>
+
+<h3>Section 3: Defense in Depth</h3>
+<p>
+Is a layered defense much like a castle defense. <br/>
+<img src="/images/Defense_In_Depth.png" alt="Defense_In_Depth" height="360px" width="640px">
+</p>
+
+<h3>Section 4: Intrusion Detection</h3>
+<p>
+IDS (<b>I</b>ntrusion <b>D</b>etection <b>S</b>ystem) and IPS (<b>I</b>ntrusion <b>P</b>revention <b>S</b>ystem). Uses
+signatures and anomaly detection to detect attacks. It also uses OS Type, Protocol fields, known exploit tools, and packet
+techniques. Some advantages are:
+<ul>
+<li>catch known attacks quickly and efficiently</li>
+<li>good information on attacks</li>
+<li>virtual patching</li>
+</ul>
+Some disadvantages are:
+<ul>
+<li>Zero day attacks (arms race phenomenon)</li>
+<li>False positives</li>
+</ul>
+</p>
+
+<h3>Section 5: Honeynets / Intrusion Deception</h3>
+<p>
+The idea mimics honeypots from earlier weeks (catch flies in honey). We can devise phony networks to waste their time and/or
+deceive them. We can use unassigned internal addresses. We can also apply sucker algorithms to slow down the attack along
+with creating phony content for the attacker to download or look at. Two problems this causes is it requires a lot of
+configuration per site and some vendors provide solutions.
+</p>
+
+<h3>Section 6: Quarantine</h3>
+<p>
+Quarantine is when you place hosts that misbehave into a quarantine area where they can’t infect anyone else. It is commonly
+deployed on network entry. Firewalls often implement a “Blacklisting” mechanism, sort of like a quarantine. Behavior
+indicates the machine is infected or user is doing something wrong. A limited quarantine usually works better for local
+hosts since the user probably doesn’t realize they are doing anything wrong so don’t blacklist them.
+</p>
+
+<h3>Section 7: Reputation</h3>
+<p>
+This is a “big data” solution. Collect a list of good and bad things and serve the list. The list can contain:
+<ul>
+<li>IP address that were associated with malware or botnets</li>
+<li>IP addresses of spammers</li>
+<li>URLs that reference pages with scripting attacks, drive-by-downloads, etc</li>
+<li>URL classification and categorization</li>
+<li>Files that come from known program releases</li>
+<li>Files that come from known viruses or tend to be included in viruses.</li>
+</ul>
+Three issues that arise are multi-function hosts, stale data, and zero-day susceptibility.
+</p>
+
+<h3>Section 8: Person in the Middle (MITM)</h3>
+<p>
+Person the middle intercepting and possibly changing and/or rerouting messages. Is used for good and evil.
+<br/><br/>
+Some bad MITM examples:
+<ul>
+<li>ARP poisoning: Flood network with ARP requests. Fool host into thinking the internet gateway is at your MAC
+address instead the real one</li>
+<li>TCP hijacking: Inject, Delete, or Change data in a TCP stream.</li>
+</ul>
+Some good MITM examples:
+<ul>
+<li>Terminating TCP Proxy: Terminate TCP connections on one side and create a completely new connection on the other side.
+Then rewrite all headers to that an attacker can’t transmit protocol attacks through the firewall. Repackage TCP packets
+to make efficient use of size, remove overlapping segments, and retransmissions.</li>
+<li>HTTP Proxy: Incept all HTPP traffic. Verify the destination against list of dangerous hosts, Look for weirdly encoded
+URLS, detect and remove malicious javascript or EXE files from a remote sites response.</li>
+<li>Mail Proxy: precent attackers from sending EXE files as well as looking for sensitive data being exfiltrated in emails</li>
+<li>SSL MITM: Intercept, decrypt and re-encrypt.</li>
+</ul>
+How do you detect MITM (TCP)? The trick is to use an HMAC (Crypto Hash, Pseudo Random Function), such as SHA-1, SHA-256,
+SHA-3 (avoid the compromised MD5 hash). If each packet has a has on it, the receiver can detect if the MITM changed the
+packet. When you make an TLS/SSL connection you are guaranteed the following things:
+<ol>
+<li>The host you connect to has the private key of the server certificate</li>
+<li>The DNS name of this host, stored in the server certificate resolves to the same IP address that you connected to</li>
+<li>The connection is as hard to decrypt as the cipher suite selected, given that the random numbers in use are cryptographically string.</li>
+<li>The integrity of the data is guaranteed by as string a hash as specified in the cipher suite selected.</li>
+<li>The connection cannot be decrypted later if the server is compromised, ONLY IF the cipher suite with perfect forward secrecy (PFS). Note that RSA does not have PFS</li>
+<li>The client is guaranteed to own the secret key of the client certificate, if a client certificate is in use (Note that Client Certs are almost never used)</li>
+<li>The client DNS, stored in the client certificate resolves to the same IP address seen by the server (Note that Client Certs are almost never used)</li>
+</ol>
+</p>
+
+<h3>Section 9: Reconnaissance (Recon)</h3>
+<p>
+What is recon? There are two types of recon. First is active where the attacker wants to attack vulnerable machines on a
+network and the attacker needs to find addresses for services that can be attacked. Second is Passive where the attacker
+is able to see data on the network (wiring closet, ISP) and the attacker wants to learn about people.
+<br/>Active Recon: <br/>
+A basic tool is scanning- trying to connect to many hosts and services. The goal is to get the IP address and UDP/TCP port
+of a service you can attack. NMAP is a common tool. Examples of simple scans:
+<ul>
+<li>Ping (ICMP ECHO / ECHO_REPLY)</li>
+<li>TCP port scan (SYN/SYNACK)</li>
+<li>UDP scans (UDP data packet / ICMP Destination Unreachable)</li>
+<li>Slow scan (over months)</li>
+</ul>
+You can also scan for vulnerabilities (white and black hat). You can send an attack to an [IP,port], see if it works, if
+not, try the next [IP,port].
+<br/>Passive Recon:<br/>
+You can get the data by tapping ISPs, hiding equipment in wiring closets, and listening to radio signals. You can “envelope”
+the data and see the content. How do you defend against recon? Policy and Deep Inspection can help. Honeynets can also slow
+down reconnaissance. Generally you can detect with a SIEM, IPS, and Firewall. It is hard to defend against passive recon.
+
+</p>
+
+<h3>Section 10: Spoofing</h3>
+<p>
+What is it? Spoofing when an attacker masquerades as another network entity in order to gain some advantage over the
+network defenses of the target. You can use IP and ARP spoofing to preform MITM attacks. There are some legitimate uses
+such as load testing with a large number of users. What can be spoofed?
+<ul>
+<li>TCP sequence numbers</li>
+<li>IP addresses</li>
+<li>MAC addresses</li>
+<li>Email addresses</li>
+<li>HTTP fields</li>
+</ul>
+How do you defend against spoofing? Most network security solutions perform some basic checks to detect and defend against
+spoofing. You can ingress filter that includes dropping packets from bogons. You can egress filter to ensure that only
+packets that belong to appropriate internal networks are routed through.
+</p>
+
+<h3>Section 11: Resource consumption attacks</h3>
+<p>
+What is a resource consumption attack? It is a DoS (Denial of Service). This means sending the service a ton of requests
+that it can’t deal with and it slows or stops. There are a couple different types of DoS attacks:
+<ul>
+<li>Network exhaustion: Flooding the network so that the service is unreachable or is reachable with such high latency
+that it is useless</li>
+<li>CPU exhaustion: Make the CPU so busy that legitimate traffic cannot be served</li>
+<li>Memory Exhaustion: Cause server to run out of memory and slow down/crash</li>
+<li>Storage Exhaustion: Cause server to run out of disk space</li>
+<li>Application vulnerability exploitation: making the application unavailable by crashing it or the OS.</li>
+<li>Finite resources: sockets, TCP listen queue, connection pool, firewall session tables, SSL exhaustion</li>
+</ul>
+How do you defend against DoS attacks? You can have network traffic validation and cleansing by network products.
+You can also have traffic scrubbing centers.
+</p>
+
+<h3>Section 12: Bugs and Back Doors</h3>
+<p>
+What are they? Backdoors are intentional while bugs are unintentional but the threat of compromise is the same. Some
+common bugs are:
+<ul>
+<li>Built-in or default passwords</li>
+<li>Susceptibility to Nasty Packets (aka PacketBombs)</li>
+<li>Protocol design bugs
+<ul>
+<li>Passwords in the clear</li>
+<li>Amplification characteristics</li>
+<li>Legacy features that are still enabled</li>
+</ul>
+</li>
+<li>Buffer overflow</li>
+</ul>
+</p>
+
+<h3>Section 13: Defenses</h3>
+<p>
+<ol>
+<li>Packet Filtering</li>
+<li>Proxying</li>
+<li>NAT</li>
+</ol>
+<h4>Packet Filtering:</h4>
+<p>
+Basic first step towards protecting your network. It is a policy driven whitelisting method to allow only expected
+traffic to cross the network boundary. It typically uses basic layer 3 and 4 properties of a packet to be controlled
+via policy. Basic packet validation includes defense against segmentation, fragmentation attacks, malformed packets
+and streams implicitly. There is also deep inspection where you inspect the data portion of the packet in addition
+to the network headers.
+</p>
+<h4>Proxying:</h4>
+<p>
+Proxies are a “MITM” that overcomes some of the basic limitations of basic packet filtering. It inspects and sometimes
+modifies application data to prevent attacks. It can also provide nuanced and granular access control based on
+application specific information. Performance is actually worse for proxying as opposed to packet filtering.
+</p>
+<h4>NAT:</h4>
+<p>
+Network address translation. This is generally covered in a networking class so I will leave it to you to learn
+about NAT’s since they are “pretty” simple. How do you get past a NAT? You can use
+STUN (<b>S</b>imple <b>T</b>raversal of <b>U</b>DP through <b>N</b>AT) or TURN
+(<b>T</b>raversal <b>U</b>sing <b>R</b>elay <b>N</b>AT). STUN uses an external server to derive
+the mapping of the external port and IP address being used for the connection. TURN uses an intermediate server to
+relay messages to both parties behind NAT.
+</p>
+</p>
 
 
 </div>
