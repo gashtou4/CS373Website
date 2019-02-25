@@ -17,7 +17,294 @@
 
 
 
-<!-- Insert Write up here -->
+<h1 style="text-align: center">
+Week 7 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Web Security</h2>
+
+<h3>Introduction: </h3>
+<p>
+This week we are focusing on "being" the attackers. To begin, lets define "Computer Crime" under Oregon Law.
+<ol>
+<li>Knowingly accessing or using a computer or network (or attempting to do so) for the purpose of fraud; to obtain money,
+property, or services; or to commit theft of proprietary information.</li>
+<li>Knowingly and without authorization altering, destroying, or damaging any computer, network, software, data, etc
+(or attempting to do so)</li>
+<li>Knowingly and without authorization using or accessing a computer or network (or attempting to do so).</li>
+</ol>
+Notice that each of these had the words "or attempting to do so" which means you don't need to be "successful" in order of
+it to be a crime.
+<br/>
+<br/>
+TCP/IP and HTTP are the web delivery mechanism. Most modern browsers actually attempt to block attacks since they know
+most attacks happen in the browser.
+</p>
+
+<h3>Section 1: History</h3>
+<p>
+<img src="/images/evolution_web.png" alt="Stack" height="360px" width="640px">
+<br/>
+<img src="/images/history.png" alt="Stack" height="360px" width="640px">
+<br/>
+Before, the goal of the attacker was generally to get out of the browser and into the operating system. Nowadays, there
+really is no reason to leave the browser. Everything is done in the browser now so why leave? This is called MitB
+(<b>M</b>an <b>i</b>n <b>t</b>he <b>B</b>rowser). REMEMBER: <b>95%</b> of malware is delivered via the web!!
+
+<h4>History of the browser</h4>
+<img src="/images/web_browser_1.0.png" alt="Stack" height="360px" width="640px">
+<br/>
+<img src="/images/web_browser_2.0.png" alt="Stack" height="360px" width="640px">
+<br/>
+Once Javascript could interact with all layers, it was an attackers dream. They then had no reason to get out of the browser.
+<br/>
+There are 5 injections points for attackers:
+<ol>
+<li>De-obfuscated Content (Located on Browser/Extensions)</li>
+<li>Javascript (Located on Script Engine)</li>
+<li>HTML [DOM Tree] (Located on Browser/Extensions)</li>
+<li>HTML [Raw HTML] (Located on WinInet ETW/ETL)</li>
+<li>HTTP (Located on the HTTP Proxy Network Layer)</li>
+</ol>
+There are two types of attacks:
+<ol>
+<li>User-Level Attacks</li>
+<li>Browser-Level Attacks</li>
+</ol>
+</p>
+
+<h3>Section 2: User-Level Attacks</h3>
+<p>
+Many attacks are based on Social Engineering. Social Engineering is the psychological manipulation of people into
+performing actions or divulging confidential information. It is also a type of confidence trick for the purpose of
+information gathering, fraud, or system access. It differs from a traditional “con” in that it is often one of many
+steps in a more complex fraud scheme. <br/>
+In user level attacks, the users can be ARE the weak link. Hardened/current browser/OS will not help!. These types of
+attacks exploit the common user traits of:
+<ul>
+<li>Impatient</li>
+<li>Lazy</li>
+<li>Self-proclaimed omniscience</li>
+<li>Clickaholic</li>
+</ul>
+These attacks direct the user to malicious content through their own actions like executables, browser exploits, and
+malicious forms. Some examples of User-Level Attacks (which we will go over) are:
+<ul>
+<li>Phishing</li>
+<li>SEO (<b>S</b>earch <b>E</b>ngine <b>O</b>ptimization) Poisoning</li>
+<li>Fake AV</li>
+<li>Social Media</li>
+<li>Malvertising</li>
+<li>Waterhole</li>
+</ul>
+
+<h4>Phishing</h4>
+<p>
+This is not just restricted to banking/financial institutions anymore. Spear phishing, social media, and snowshoe
+spam have continued to keep it alive. Please note that valid SSL cert’s do not always protect the user.
+</p>
+
+<h4>SEO Poisoing</h4>
+<p>
+The attackers identify trends using available tools such as Google Trends. They game the search engine’s relevance
+rules by having related content, massive inbound linking, and relevant inbound linking. They then use those search
+results to lure web-searching victims who are searching for things such as:
+<ul>
+<li>Celebrities</li>
+<li>Pop Culture</li>
+<li>World Events</li>
+<li>Education/Professional</li>
+<li>Fake AV/AM</li>
+</ul>
+The sites then redirect to malicious content.
+</p>
+
+<h4>Fake Updates / Fake AV</h4>
+<p>
+These attacks prey on the users good intentions. They often mimic OS-level UI components and well-known security
+brands. Sometimes these deliver malware but also may deliver nothing for the low cost of $49.99.
+</p>
+
+<h4>Social Media</h4>
+<p>
+Social media was a gift to malware authors. Anti-spam systems had become very effective but social media opened a
+new world for malicious URL delivery and information gathering. Catfishing is a way to trick people into thinking
+the attacker or info gatherer is someone they are not.
+</p>
+
+<h4>Malvertising</h4>
+<p>
+The malicious actor uses advertising networks as a delivery mechanism for malware. This kind of attack does not
+require any website or hosting provider compromise. It is very dangerous, as most end users implicitly trust content
+on high-profile, popular, and known sites.
+</p>
+
+<h4>Waterhole</h4>
+<p>
+With closed OSes and application signing, developers have become a prime target. An easy way to target developers is
+to hack a resource (forum for example) known to be used by a community of developers).
+<img src="/images/waterhole.png" alt="Stack" height="360px" width="640px">
+</p>
+</p>
+
+<h3>Section 3: Solutions?</h3>
+<p>
+<ul>
+<li>URL/Domain Reputation Systems</li>
+<ul>
+<li>Real-time protection in browser or network device</li>
+<li>Search result link annotation</li>
+</ul>
+<li>Site Certification Services</li>
+<li>Client and Gateway AV/AM</li>
+<li>Safe URL Shorteners</li>
+<li>Content provider education</li>
+<ul>
+<li>Banks love to train their customers to be phishing victims</li>
+<li>Brand monitoring services</li>
+</ul>
+<b><li>End User Education</li>
+<ul>
+<li>The human Firewall. (Good luck)</li>
+<li>In reality, some progress has been made, although we are always a step behind</li>
+</ul></b>
+</ul>
+<img src="/images/attack_surface.png" alt="Stack" height="360px" width="640px">
+<br/>
+</p>
+
+<h3>Section 4: Security</h3>
+<p>
+Security Features of the modern web browser:
+<ul>
+<li>Content Security Policy Enforcement</li>
+<ul>
+<li>SOP (<b>S</b>ame <b>O</b>rigin <b>P</b>olicy</li>
+<ul>
+<li>DOM</li>
+<li>XMLHTTPRequest</li>
+<li>Cookies</li>
+<li>Flash</li>
+<li>Java</li>
+</ul>
+<li>CORS (<b>C</b>ross <b>O</b>rigin <b>R</b>esource <b>S</b>haring</li>
+</ul>
+<li>URL Scheme Access Rules</li>
+<li>OS Isolation/Sandboxing</li>
+<li>Redirection Restrictions</li>
+<li>Content handling/sniffing</li>
+<li>Disruptive Script Handling</li>
+<li>Build-in and Plug-in URL Reputation Client</li>
+<li>Add-on AV/AM Content Monitoring</li>
+</ul>
+<h4>Browser Exploits</h4>
+<p>
+The attacker gets the browser to download, render, and execute maliciously crafted web content. Attackers will
+exploit vulnerabilities in the browser using known exploits, unknown “AKA Zero Day” exploits, and often executes
+shellcode via the browser script engine. The multi-step process is:
+<ol>
+<li>Lure user the site (User-initiated or drive-by)</li>
+<li>Exploit the browser</li>
+<li>Download/Execute actually payload</li>
+</ol>
+Can’t we just filter malicious-looking page content? Not really. Malware use different obfuscation techniques:
+<ul>
+<li>Rename script variables to meaningless, short, difficult to read text</li>
+<li>Remove any whitespace, making a massive block of text</li>
+<li>Self-generating code</li>
+<li>Heavy use of eval statements with character codes and string manipulation</li>
+<li>Various encryption methods</li>
+</ul>
+Attackers also use MITB (Man In The Browser) which is the dangerous cousin to the MITM. It intercepts and modifies
+traffic to and from the server but is inside the browser!
+</p>
+</p>
+
+<h3>Section 5: How can we tell if a URL is actually malicious?</h3>
+<p>
+<ul>
+<b><li>Alexa:</li></b>
+<ul>
+<li>Useful for determining general site popularity and prevalence. Data is collected (in-part) via end-user
+toolbars and is domain-based (not URL)</li>
+</ul>
+<b><li>archive.org:</li></b>
+<ul>
+<li>Useful in determining a sites changes overtime. Due to this, it is not very useful for shot-lived
+malware content</li>
+</ul>
+<b><li>IPVOID:</li></b>
+<ul>
+<li>Checks an IP against a large list of IP blacklists which contain 35+ blacklists like Anit-spam,
+Anit-phishing, and Anti-malware</li>
+</ul>
+<b><li>CheckShortURL:</li></b>
+<ul>
+<li>Is a URL expander service for most short URL services. It is a single clearing house with many
+services supported at single location</li>
+</ul>
+<b><li>Site Dossier:</li></b>
+<ul>
+<li>Gives general site information such as IP, Parent, DNS Servers, and inbound links</li>
+</ul>
+<b><li>Webutation:</li></b>
+<ul>
+<li>Is a URL reputation clearing house that uses Google Safebrowse, Norton Safeweb, WebAV,
+and Web of Trust.</li>
+</ul>
+<b><li>Web Inspector:</li></b>
+<ul>
+<li>Is an online web scanning tool that also provides a list of recently detected malicious
+sites. It uses different classification techniques such as blacklist membership, AV
+scanning, static analysis, and dynamic analysis</li>
+</ul>
+<b><li>Virus Total:</li></b>
+<ul>
+<li>Has been discussed in previous blogs</li>
+</ul>
+<b><li>Linux JWhois:</li></b>
+<ul>
+<li>Is a domain name registration data client. For a given name, it can provide:
+<ul>
+<li>Registrar</li>
+<li>Registration Date</li>
+<li>Expiration Date</li>
+<li>Contact Name</li>
+</ul>
+</li>
+</ul>
+<b><li>Linux Dig:</li></b>
+<ul>
+<li>Is a DNS resolver utility. For a given domain, it will provide:
+<ul>
+<li>SOA</li>
+<li>A records</li>
+<li>MX records</li>
+<li>CNAME records</li>
+<li>NS records</li>
+<li>AAAA records</li>
+<li>TXT records</li>
+</ul>
+</li>
+</ul>
+<b><li>IOC (Indicators Of Compromise):</li></b>
+<ul>
+<li>It connects the DOTs and provides contextual data around different malicious objects like URL/Domain,
+IP/ASN, File Hash, and Actor</li>
+</ul>
+</ul>
+</p>
+
+<h3>Section 6: Research Tools</h3>
+<p>
+A couple of client-side research tools are:
+<ul>
+<li><a href="http://phantomjs.org">PhantomJS</a>: Headless, scriptable browser</li>
+<li><a href="http://www.portswigger.net/burp/">BurpSuite</a>: Graphical deconstruction tool</li>
+<li><a href="https://www.owasp.org/index_php/Category:OWASP_WebScarab_Project">WebScarab</a>: Graphical deconstruction tool</li>
+<li><a href="http://code.google.com/p/jsunpack-n/">JSUnpack</a>: Script de-objuscator</li>
+<li><a href="http://getfirebug.com/">Firebug</a>: Multi-feature Firefox plugin</li>
+</ul>
+</p>
 
 
 </div>
