@@ -17,7 +17,119 @@
 
 
 
-<!-- Insert Write up here -->
+
+<h1 style="text-align: center">
+Week 8 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Messaging Security</h2>
+
+<h3>Introduction: </h3>
+<p>
+This week we will be discussing Messaging security. We will almost only focus on Email security though.
+</p>
+
+<h3>Section 1: Terminology</h3>
+<p>
+<ul>
+<li><b>Spam</b>: unsolicited messages</li>
+<li><b>Ham</b>: opposite of spam. (AKA legitimate)</li>
+<li><b>Spamtrap</b>: An email that has NO reason recieving any email (so any mail recieved
+is spam</li>
+<li><b>Botnet</b>: This has been discussed before</li>
+<li><b>Snowshoe Spam</b>: Spamming where the weight is distributed over many IP addresses</li>
+<li><b>Phishing</b>: An attempt to get personal information from people through email. Spear Phishing
+is a targeted phishing attempt</li>
+<li><b>RBL</b>: <b>R</b>eal-time <b>B</b>lackhole <b>L</b>ist. This something that you can check
+before accepting emails that will tell you if they are spam are not</li>
+<li><b>Heuristics</b>: This has been discussed before</li>
+<li><b>Bayesian</b>: Giving different features weights to help distinguish between ham and spam</li>
+</ul>
+</p>
+
+<h3>Section 2: History</h3>
+<p>
+<h4>419 Phishing:</h4>
+<img src="/images/419_Phishing.png" alt="419_Phishing" height="360px" width="640px">
+<h4>Canadian Pharmacy</h4>
+<img src="/images/Canadian_Pharm.png" alt="Canadian_Pharm" height="360px" width="640px">
+<h4>Pump n' Dump</h4>
+<img src="/images/Pump_n_Dump.png" alt="Pump_n_Dump" height="360px" width="640px">
+<h4>Botnets</h4>
+<img src="/images/botnets.png" alt="botnets" height="360px" width="640px">
+</p>
+
+<h3>Section 3: Defense</h3>
+<p>
+How do we combat spam? We use engines to find spam. Engines are:
+<ul>
+<li>Reputation-driven</li>
+<ul>
+<li>IP</li>
+<li>Message</li>
+<li>URL</li>
+</ul>
+<li>Content-driven</li>
+<ul>
+<li>Common strings</li>
+<li>Fixed vs variable strings (Regular expression</li>
+<li>Attributes of the message</li>
+<li>Combinations of the above</li>
+</ul>
+</ul>
+What tools can we use for research purposes?
+<ul>
+<li>Linux Tools</li>
+<ul>
+<li>DIG (<b>D</b>omain <b>I</b>nformation <b>G</b>roper): DNS record investigation</li>
+<li>WHOIS: IP/Domain registration info search</li>
+<li>Grep/SED/AWK: parse and manipulate data</li>
+</ul>
+<li>Open-source databases</li>
+<ul>
+<li>PostgreSQL: "Worlds most advanced open source DB</li>
+<li>MySQL: "Worlds most popular open source DB</li>
+</ul>
+<li>The Regex Coach: Regular expression syntax/functionality learning aid</li>
+<li>Trustedsource.org: historical and current reputations based on McAfee data</li>
+<li>Spamhaus.org: authoritative source of reputation data</li>
+</ul>
+</p>
+
+<h3>Section 4: Research Techniques</h3>
+<p>
+<ul>
+<li>Parsing: extract key meta data</li>
+<li>Grouping: by timestamp, source_ip, subject and other common elements</li>
+<li>Aggregation:</li>
+<ul>
+<li>Values/time</li>
+<ul>
+<li>count distinct *</li>
+<li>others</li>
+</ul>
+<li>exposure of relevant research paths</li>
+</ul>
+<li>Identification of outliers</li>
+<ul>
+<li>When A, which is highly similar to B, is classified as spam but B is not (Why/Why not?)</li>
+</ul>
+</ul>
+Some things to consider include how much human input is required? Is it fully automated? Is it a
+comination of automation and human input? What about probability scoring vs additive scoring?
+</p>
+
+<h3>Section 5: The Data Scientific Method</h3>
+<p>
+<ol>
+<li>Start with data</li>
+<li>Develop intuitions about the data and the questions it can answer</li>
+<li>Formulate your question</li>
+<li>Leverage your current data to better understand if the that question is the right one to ask.
+If not, keep iterating until you have a testable hypothesis.</li>
+<li>Create a framework where you can run tests and/or experiments</li>
+<li>Analyze the results and draw insights about your question</li>
+</ol>
+</p>
 
 
 </div>
