@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Week 9 Writeup</title>
+<title>Week 9/10 Writeup</title>
 <link rel="stylesheet" href="/styles/app.css">
 #for(script in Scripts) {
 <script src=#(script)></script>
@@ -17,7 +17,159 @@
 
 
 
-<!-- Insert Write up here -->
+<h1 style="text-align: center">
+Week 9/10 Write Up
+</h1>
+<h2 style="text-align: center">Topic: Mobile Security</h2>
+
+<h3>Introduction: </h3>
+<p>
+We will focus this last post on mobile security. While there are multiple kinds of mobile devices, we will
+focus on Android Smartphones. Now-a-days, the distinction between PC and smartphone is basically
+arbitrary and fundamentally comes down to the interaction model and level of possessiveness.
+</p>
+
+<h3>Section 1: Evolution of Mobile Networks</h3>
+<p>
+The first call using a handheld mobile phone was made by Motorola on April 3rd, 1973. The first cell
+phone on the market was the Motorola DynaTAC 8000X in 1984 for <b>$3,995!!</b> It had 8 hours of stand-by
+and 30 minutes of talk time. It could store up to 30 phone numbers and used the analog cell phone
+network (1G) AMPS in the US.
+<br/>
+<img src="/images/mobile_network_hist.png" alt="mobile_network_hist" height="360px" width="640px">
+<br/>
+</p>
+
+<h3>Section 2: Mobile Operating Systems</h3>
+<p>
+<img src="/images/mobile_os_hist.png" alt="mobile_os_hist" height="360px" width="640px">
+<br/>
+Android powered devices launched in late 2009 with the Nexus One coming out shortly after in January 2010.
+In May 2010, Android 2.2 (nicknamed Froyo) was released with multitasking. Android finally surpassed
+Apple's iOS in May 2012 and in November 2013 Android doubled Apple's iOS market share. <br/>
+<img src="/images/mobile_timeline.png" alt="mobile_timeline" height="360px" width="640px">
+<br/>
+<h4>Apple: iOS</h4>
+<p>
+Apple started the smartphone revolution in 2007 with the iPhone and iOS. iOS is closed source and
+proprietary and present <b>ONLY</b> on Apple devices. It is fully integrated with Apple's services
+and software:
+<ul>
+<li>iCloud</li>
+<li>Safari</li>
+<li>App Store</li>
+<li>Siri</li>
+<li>iTunes</li>
+<li>FaceTime</li>
+<li>iMessage</li>
+<li>etc</li>
+</ul>
+iOS was derived from Mac OS X. It uses the XNU Kernel and the Mach-O file format. It added
+multitasking in iOS 4 and over-the-air updates in iOS5.
+</p>
+<h4>Microsoft: Windows Phone</h4>
+<p>
+Windows Phone is/was the the successor of Windows Mobile. It is also closed source and proprietary.
+It is fully integrated with Microsoft services:
+<ul>
+<li>Internet Explorer</li>
+<li>Office</li>
+<li>Bing</li>
+<li>Xbox</li>
+</ul>
+Windows Phone 7 was launched in October 2010 with the "Metro" user interface and a card-based task
+switcher. Windows Phone 8 was released in October 2012 with multi-core, NFC and BitLocker encryption
+support. It included over-the-air updates and improved removalable storage support. Windows Phone 8.1
+was released in April 2014 with Cortana Voice Assistant, a notification center, and Internet Explorer
+11.
+</p>
+<h4>Google: Android</h4>
+<p>
+Android was developed by Android Inc in 2005 and acquired by Google in 2007. It is "free and open
+source". That is in quotes because it's not COMPLETELY free and open source (This has gotten worse
+since 2014 when this presentation was given). ARM, x86, and MIPS CPUs were supported.
+</p>
+<h4>Misc: Others</h4>
+<p>
+<ul>
+<li>Firefox OS</li>
+<ul>
+<li>From Mozilla, Linux kernel OS for smartphones, tablets, and computers.</li>
+<li>Community-based that uses open standards. (Open Source)</li>
+</ul>
+<li>Tizen</li>
+<ul>
+<li>Hosted by Linux Foundation and guided by Intel and Samsung</li>
+<li>Inherit from MeeGo and LiMo.</li>
+<li>Open source and designed for mobility and smart home appliances</li>
+</ul>
+<li>Ubuntu Touch</li>
+<ul>
+<li>From Canonical and Ubuntu community (open source)</li>
+<li>Supports smartphones, tablets, and smart-tvs.</li>
+<li>Uses software from Maemo, MeeGo, Maliit, and Android</li>
+<li>Full desktop experience when connected to external monitor</li>
+</ul>
+</ul>
+</p>
+<img src="/images/mobile_os_char.png" alt="mobile_os_char" height="360px" width="640px">
+<br/>
+<img src="/images/mobile_os_security.png" alt="mobile_os_security" height="360px" width="640px">
+</p>
+
+<h3>Section 3: Bypassing System Security</h3>
+<p>
+iOS can be "jailbroken" which allows the user to run software/code that is not authorized by Apple.
+It has open secuirsecurityty backdoors like "alpine" is the default SSH root password. It allowed you to unlock
+a carrier-locked iPhone. <br/><br/>
+Android can be "rooted" which gives root privialges to the system. This allows you to remove pre-installed
+applications, bypass restrictions from manufactures and carriers.
+from manufactures and carriers. <br/><br/>
+Android has made MANY android security enhancements: <br/>
+<img src="/images/android_enhancements.png" alt="android_enhancements" height="360px" width="640px">
+</p>
+
+<h3>Section 4: The APK</h3>
+<p>
+An APK is how Android apps are distributed. The have a couple major components:
+<ul>
+<li>AndroidManifest.xml</li>
+<ul>
+<li>This is where metadata about the app like the icon and name are defined. It is also where the entry
+points to the app are defined. (This is NOT a normal XML, it is a binary XML)
+</li>
+</ul>
+<li>classes.dex</li>
+<ul>
+<li>This is an archive of the compiled java code</li>
+</ul>
+<li>lib</li>
+<ul>
+<li>This is where native code goes (if it has any)</li>
+</ul>
+<li>assets</li>
+<ul>
+<li>This is where assets like images go. This is where a lot of malware puts executables and other
+payloads here with misleading or random names.
+</li>
+</ul>
+</ul>
+</p>
+
+<h3>Section 5: Tools and Tricks</h3>
+<p>
+Since Android apps are primarily written in Java, they are pretty easy to decompile. This allows us to do
+static analysis very easily. Some open source tools to assist in this are:
+<ul>
+<li>apktool: extracts files from an APK, decodes the manifest, and disassemble the code.</li>
+<li>dex2jar: converts .dex to .jar and back</li>
+<li>Jadx: decompiler, but can directly open classes.dex</li>
+</ul>
+We can use emulators for dynamic analysis. The Android developers kit comes with a high-quality emulator
+(much like iOS and Apple). <br/><br/>
+One trick is to obfuscate. There is a built-in one called ProGuard. There is also commercial fork called DexGuard
+that gives you soem extra techniques as well.
+</p>
 
 
 </div>
